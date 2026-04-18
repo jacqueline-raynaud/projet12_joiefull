@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    namespace = "fr.quinquenaire.templatebddreseauadaptive"
+    namespace = "fr.quinquenaire.projet12joiefull"
 
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "fr.quinquenaire.templatebddreseauadaptive"
+        applicationId = "fr.quinquenaire.projet12joiefull"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

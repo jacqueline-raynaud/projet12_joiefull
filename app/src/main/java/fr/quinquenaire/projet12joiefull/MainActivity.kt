@@ -1,4 +1,4 @@
-package fr.quinquenaire.templatebddreseauadaptive.presentation
+package fr.quinquenaire.projet12joiefull
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -1,7 +1,7 @@
-# Android Template : BDD + Réseau + Adaptive UI
+# JoieFull - Template Android Moderne avec BDD, Réseau et UI Adaptative
 ## AVRIL 2026
 
-Ce projet est un "moule" pour lancer rapidement des applications Android modernes. Il utilise les dernières technos et suit une architecture robuste pour éviter que le code ne devienne un plat de spaghettis !
+Ce projet est réalisé dans le cadre de la formation Android développeur d'OpenClassrooms
 
 ## Fonctionnalités Clés
 
@@ -30,20 +30,9 @@ app/src/main/java/fr/quinquenaire/templatebddreseauadaptive/
 ├── data/           # LA SOURCE : Implémentation des Repositories, DAOs, API Services, DTOs.
 ├── domain/         # LE CERVEAU : Modèles métiers (Data Classes), Interfaces des Repositories, Use Cases.
 ├── di/             # LE CABLAGE : Modules Hilt pour l'injection.
-├── ui/             # LE VISAGE : Screens (Composables), ViewModels, Thème, Composants génériques.
-└── util/           # LES OUTILS : Extensions Kotlin, Helpers, formats de date, etc.
+└── presentation/   # LE VISAGE : Screens (Composables), ViewModels, Thème, Composants génériques.
 ```
-un fichier .gitkeep est à l'intérieur pour éviter que git ignore les dossiers vides.
-
-> **Note pédagogique :** La couche `domain` ne doit dépendre de rien d'autre. C'est du Kotlin pur. Elle définit *ce que l'app fait* (ex: `GetUserNameUseCase`), alors que `data` définit *comment elle le récupère* (ex: via Retrofit).
-
-## Comment utiliser ce template ?
-
-1.  **Refactoriser le package** : Change `fr.quinquenaire.templatebddreseauadaptive` par ton propre nom dans `build.gradle.kts` (app) et dans les dossiers `java`.
-2.  **Config Réseau** : Mets à jour l'URL de base dans tes modules Hilt.
-3.  **Config Room** : Crée tes `@Entity` et tes `DAO`, puis mets à jour `AppDatabase`.
-4.  **MainActivity** : il n'y a pas de thème dans ce projet. N'oubliez pas de l'ajouter.
 
 ## Licence
 
-Libre d'utilisation pour tout projet personnel ou commercial. Enjoy ! 
+Libre d'utilisation. A vos risques et périls ! 

@@ -1,4 +1,4 @@
-package fr.quinquenaire.templatebddreseauadaptive
+package fr.quinquenaire.projet12joiefull
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

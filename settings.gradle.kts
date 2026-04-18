@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "template bdd reseau adaptive"
+rootProject.name = "projet12joiefull"
 include(":app")

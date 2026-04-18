@@ -1,4 +1,4 @@
-package fr.quinquenaire.templatebddreseauadaptive
+package fr.quinquenaire.projet12joiefull
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("fr.quinquenaire.templatebddreseauadaptive", appContext.packageName)
+        assertEquals("fr.quinquenaire.projet12joiefull", appContext.packageName)
     }
 }
