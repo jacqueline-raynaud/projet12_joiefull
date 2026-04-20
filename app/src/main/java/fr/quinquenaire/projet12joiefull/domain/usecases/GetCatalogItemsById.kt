@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetCatalogItemsById  @Inject constructor(
     private val repository: CatalogItemsRepository
 ){
-    fun invoke(id: Long): Flow<CatalogItems> {
+    operator fun invoke(id: Long): Flow<CatalogItems> {
         return repository.getCatalogItemsById(id)
     }
 }

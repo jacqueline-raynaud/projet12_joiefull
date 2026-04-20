@@ -26,5 +26,6 @@ object DatabaseModule {
     }
     @Provides
     fun provideCatalogItemsDao(database: AppDatabase) = database.catalogItemsDao()
+
 }
 

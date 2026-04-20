@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetCatalogItemsList @Inject constructor(
     private val repository: CatalogItemsRepository
 ){
-    suspend operator fun invoke(): Flow<List<CatalogItems>> {
+   operator fun invoke(): Flow<List<CatalogItems>> {
         return repository.getCatalogItemsList()
     }
 }
