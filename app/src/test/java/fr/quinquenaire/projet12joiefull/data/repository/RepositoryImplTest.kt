@@ -23,9 +23,8 @@ class RepositoryImplTest {
     }
 
     @Test
-    fun `ensureDataAvailable calls API and inserts when DB is empty`() = runTest {
-        // GIVEN: Le DAO renvoie 0 (base vide)
-        coEvery { dao.getCount() } returns 0
+    fun `ensureDataAvailable calls API and inserts`() = runTest {
+        // GIVEN
         coEvery { apiService.getCatalogItemsList() } returns emptyList()
 
         // WHEN: On demande de s'assurer que les données sont là
@@ -37,15 +36,40 @@ class RepositoryImplTest {
     }
 
     @Test
-    fun `ensureDataAvailable does NOT call API when DB is not empty`() = runTest {
-        // GIVEN: Le DAO renvoie 10 (base déjà remplie)
-        coEvery { dao.getCount() } returns 10
+    fun `updateUserComment calls dao`() = runTest {
+        // GIVEN
+        val id = 1L
+        val comment = "Great!"
 
-        // WHEN: On demande de s'assurer que les données sont là
-        repository.ensureDataAvailable()
+        // WHEN
+        repository.updateUserComment(id, comment)
 
-        // THEN: L'API ne doit JAMAIS être appelée
-        coVerify(exactly = 0) { apiService.getCatalogItemsList() }
-        coVerify(exactly = 0) { dao.insertAll(any()) }
+        // THEN
+        coVerify { dao.updateUserComment(id, comment) }
+    }
+
+    @Test
+    fun `updateUserRating calls dao`() = runTest {
+        // GIVEN
+        val id = 1L
+        val rating = 4.5f
+
+        // WHEN
+        repository.updateUserRating(id, rating)
+
+        // THEN
+        coVerify { dao.updateUserRating(id, rating) }
+    }
+
+    @Test
+    fun `toggleFavorite calls dao`() = runTest {
+        // GIVEN
+        val id = 1L
+
+        // WHEN
+        repository.toggleFavorite(id)
+
+        // THEN
+        coVerify { dao.toggleFavorite(id) }
     }
 }

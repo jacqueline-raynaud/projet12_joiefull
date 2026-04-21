@@ -28,6 +28,7 @@ class CatalogItemsViewModelTest {
     private val toggleFavorite: ToggleFavorite = mockk()
     private val getCatalogItemsById: GetCatalogItemsById = mockk()
     private val ensureDataAvailable: EnsureDataAvailable = mockk()
+    private val commentItem: CommentItem = mockk()
 
     @Before
     fun setup() {
@@ -52,7 +53,7 @@ class CatalogItemsViewModelTest {
 
         // WHEN: On crée le ViewModel
         val viewModel = CatalogItemsViewModel(
-            getCatalogItemsList, updateRating, toggleFavorite, getCatalogItemsById, ensureDataAvailable
+            getCatalogItemsList, updateRating, toggleFavorite, getCatalogItemsById, ensureDataAvailable, commentItem
         )
 
         // On lance un collecteur pour activer le StateFlow
@@ -77,7 +78,7 @@ class CatalogItemsViewModelTest {
 
         // WHEN
         val viewModel = CatalogItemsViewModel(
-            getCatalogItemsList, updateRating, toggleFavorite, getCatalogItemsById, ensureDataAvailable
+            getCatalogItemsList, updateRating, toggleFavorite, getCatalogItemsById, ensureDataAvailable, commentItem
         )
         
         val collectJob = launch { viewModel.uiState.collect {} }
@@ -98,6 +99,7 @@ class CatalogItemsViewModelTest {
         price = 10.0,
         originalPrice = 15.0,
         isFavorite = false,
-        userRating = null
+        userRating = null,
+        userComment = null
     )
 }

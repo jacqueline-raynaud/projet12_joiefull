@@ -47,7 +47,8 @@ class CatalogItemsDaoTest {
                 category = "cat",
                 likes = 0,
                 price = 10.0,
-                originalPrice = 15.0
+                originalPrice = 15.0,
+                userComment = null
             )
         )
 
@@ -66,7 +67,7 @@ class CatalogItemsDaoTest {
         val item = CatalogItemsEntity(
             id = 2, name = "Favori Test", imageUrl = "url", description = "desc",
             category = "cat", likes = 5, price = 20.0, originalPrice = 25.0,
-            isFavorite = false
+            isFavorite = false, userComment = null
         )
         dao.insertAll(listOf(item))
 
@@ -90,7 +91,8 @@ class CatalogItemsDaoTest {
         // GIVEN: Un item inséré
         val item = CatalogItemsEntity(
             id = 3, name = "Rating Test", imageUrl = "url", description = "desc",
-            category = "cat", likes = 5, price = 20.0, originalPrice = 25.0
+            category = "cat", likes = 5, price = 20.0, originalPrice = 25.0,
+            userComment = null
         )
         dao.insertAll(listOf(item))
 
@@ -100,5 +102,24 @@ class CatalogItemsDaoTest {
         // THEN: La note doit être correcte
         val updatedItem = dao.getById(3L).first()
         assertEquals(4.5f, updatedItem.userRating)
+    }
+
+    @Test
+    fun updateCommentUpdatesValue() = runBlocking {
+        // GIVEN: Un item inséré
+        val item = CatalogItemsEntity(
+            id = 4, name = "Comment Test", imageUrl = "url", description = "desc",
+            category = "cat", likes = 5, price = 20.0, originalPrice = 25.0,
+            userComment = null
+        )
+        dao.insertAll(listOf(item))
+
+        // WHEN: On met à jour le commentaire
+        val testComment = "Excellent produit"
+        dao.updateUserComment(4L, testComment)
+
+        // THEN: Le commentaire doit être correct
+        val updatedItem = dao.getById(4L).first()
+        assertEquals(testComment, updatedItem.userComment)
     }
 }
