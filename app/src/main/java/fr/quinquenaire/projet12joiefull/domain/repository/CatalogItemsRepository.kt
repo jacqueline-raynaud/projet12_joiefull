@@ -10,6 +10,8 @@ interface CatalogItemsRepository {
     // -- user actions --
     suspend fun updateUserRating(id: Long, rating: Float)
     suspend fun toggleFavorite(id: Long)
+    suspend fun updateUserComment(id: Long, comment: String)
+
 
     // -- Json if room is empty --
     suspend fun ensureDataAvailable()

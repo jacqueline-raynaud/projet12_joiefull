@@ -14,6 +14,7 @@ fun CatalogItemsEntity.toDomain(): CatalogItems {
         price = price,
         originalPrice = originalPrice,
         isFavorite = isFavorite,
-        userRating = userRating
+        userRating = userRating,
+        userComment = userComment
     )
 }

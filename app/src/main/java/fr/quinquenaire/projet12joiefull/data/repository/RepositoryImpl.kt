@@ -42,4 +42,7 @@ class RepositoryImpl @Inject constructor(
     override suspend fun toggleFavorite(id: Long) {
         catalogItemsDao.toggleFavorite(id)
     }
+    override suspend fun updateUserComment(id: Long, comment: String) {
+        catalogItemsDao.updateUserComment(id, comment)
+    }
 }

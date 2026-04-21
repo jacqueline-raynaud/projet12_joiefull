@@ -21,5 +21,6 @@ data class CatalogItemsEntity(
     @ColumnInfo(name = "price") val price: Double,
     @ColumnInfo(name = "originalPrice") val originalPrice: Double,
     @ColumnInfo(name = "isFavorite") val isFavorite: Boolean = false,
-    @ColumnInfo(name = "userRating") val userRating: Float? = null
+    @ColumnInfo(name = "userRating") val userRating: Float? = null,
+    @ColumnInfo(name = "userComment") val userComment: String? = null
 )

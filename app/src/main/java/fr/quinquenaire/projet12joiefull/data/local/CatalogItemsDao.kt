@@ -33,4 +33,6 @@ interface CatalogItemsDao {
     @Query("UPDATE catalog SET userRating = :userRating WHERE id = :id")
     suspend fun updateUserRating(id: Long, userRating: Float)
 
+    @Query("UPDATE catalog SET userComment = :userComment WHERE id = :id")
+    suspend fun updateUserComment(id: Long, userComment: String)
 }

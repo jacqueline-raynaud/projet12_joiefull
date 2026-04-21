@@ -10,5 +10,6 @@ data class CatalogItems (
     val price: Double,
     val originalPrice: Double,
     val isFavorite: Boolean,
-    val userRating: Float?
+    val userRating: Float?,
+    val userComment: String?
 )

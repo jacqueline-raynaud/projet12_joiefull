@@ -15,6 +15,7 @@ fun CatalogItemsDto.toEntity (): CatalogItemsEntity {
         price = price,
         originalPrice = originalPrice,
         isFavorite = false,
-        userRating = null
+        userRating = null,
+        userComment=null
     )
 }

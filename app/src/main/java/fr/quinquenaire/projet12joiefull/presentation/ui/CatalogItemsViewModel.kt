@@ -3,6 +3,7 @@ package fr.quinquenaire.projet12joiefull.presentation.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fr.quinquenaire.projet12joiefull.domain.usecases.CommentItem
 import fr.quinquenaire.projet12joiefull.domain.usecases.EnsureDataAvailable
 import fr.quinquenaire.projet12joiefull.domain.usecases.GetCatalogItemsById
 import fr.quinquenaire.projet12joiefull.domain.usecases.GetCatalogItemsList
@@ -26,7 +27,8 @@ class CatalogItemsViewModel @Inject constructor(
     private val updateRating: UpdateRating,
     private val toggleFavorite: ToggleFavorite,
     private val getCatalogItemsById: GetCatalogItemsById,
-    private val ensureDataAvailable: EnsureDataAvailable
+    private val ensureDataAvailable: EnsureDataAvailable,
+    private val commentItem: CommentItem
 ) : ViewModel() {
 
     private val _localState = MutableStateFlow(UiState())
@@ -90,6 +92,16 @@ class CatalogItemsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 updateRating(id, rating)
+            } catch (e: Exception) {
+                _localState.update { it.copy(error = e.message ?: "Unknown error") }
+            }
+        }
+    }
+
+    fun onCommentItem(id: Long, comment: String) {
+        viewModelScope.launch {
+            try {
+                commentItem(id, comment)
             } catch (e: Exception) {
                 _localState.update { it.copy(error = e.message ?: "Unknown error") }
             }
