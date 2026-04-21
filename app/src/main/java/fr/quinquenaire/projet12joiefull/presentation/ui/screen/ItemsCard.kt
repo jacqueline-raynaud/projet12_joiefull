@@ -104,7 +104,8 @@ private fun ItemsCardPreview() {
                 price = 120.0,
                 originalPrice = 150.0,
                 isFavorite = false,
-                userRating = 4.8f
+                userRating = 4.8f,
+                userComment = "Très confortable !"
             ),
             onToggleFavorite = {},
             isSelected = false,
@@ -129,7 +130,8 @@ private fun ItemsCardFavoriteSelectedPreview() {
                 price = 85.0,
                 originalPrice = 100.0,
                 isFavorite = true,
-                userRating = 4.2f
+                userRating = 4.2f,
+                userComment = "Très belle robe !"
             ),
             onToggleFavorite = {},
             isSelected = true,

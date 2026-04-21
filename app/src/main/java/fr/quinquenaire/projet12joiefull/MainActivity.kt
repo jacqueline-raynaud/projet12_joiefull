@@ -30,9 +30,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val windowSizeClass = calculateWindowSizeClass(this)
+            /*val windowSizeClass = calculateWindowSizeClass(this)*/
+
             JoiefullTheme() {
-                //TODO
+                CatalogItemsApp()
             }
         }
     }

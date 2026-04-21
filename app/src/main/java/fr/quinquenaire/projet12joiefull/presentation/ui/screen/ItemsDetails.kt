@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
@@ -50,12 +51,11 @@ import fr.quinquenaire.projet12joiefull.presentation.ui.components.RatingTag
 fun ItemsDetails(
     item: CatalogItems,
     onToggleFavorite: (Long) -> Unit,
-    isSelected: Boolean,
-    onClick: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    onRateClick: (Long, Float) -> Unit,
-    onCommentItem: (Long, String) -> Unit,
+    onRate: (Float) -> Unit,
+    onCommentItem: (String) -> Unit,
+    onShare: (String, Double) -> Unit
 ) {
     Column(
         modifier = modifier.padding(8.dp)
@@ -80,9 +80,9 @@ fun ItemsDetails(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 IconButton(onClick = onBack) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Retour")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                 }
-                IconButton(onClick = { /* Action Partage */ }) {
+                IconButton(onClick = { onShare(item.name, item.price)}) {
                     Icon(Icons.Default.Share, contentDescription = "Partager")
                 }
             }
@@ -137,7 +137,7 @@ fun ItemsDetails(
             RatingTag(
                 currentRating = item.userRating ?: 0f,
                 onRatingChanged = { rating ->
-                    onRateClick(item.id, rating)
+                    onRate(rating)
                 }
             )
 
@@ -161,7 +161,7 @@ fun ItemsDetails(
 
         // Save if comment
         Button(
-            onClick = { onCommentItem(item.id, commentText) },
+            onClick = { onCommentItem(commentText) },
             modifier = Modifier.padding(top = 8.dp),
 
             enabled = commentText.isNotBlank() && commentText != (item.userComment ?: "")
@@ -191,11 +191,10 @@ private fun ItemsDetailsPreview() {
                     userComment = "Très confortable !"
                 ),
                 onToggleFavorite = {},
-                isSelected = false,
-                onClick = {},
                 onBack = {},
-                onRateClick = { _, _ -> },
-                onCommentItem = { _, _ -> }
+                onRate = { _ -> },
+                onCommentItem = { _ -> },
+                onShare = { _, _ -> }
             )
         }
     }
@@ -221,11 +220,10 @@ private fun ItemsDetailsFavoritePreview() {
                     userComment = "Très belle robe, je recommande !"
                 ),
                 onToggleFavorite = {},
-                isSelected = true,
-                onClick = {},
                 onBack = {},
-                onRateClick = { _, _ -> },
-                onCommentItem = { _, _ -> }
+                onRate = { _ -> },
+                onCommentItem = { _ -> },
+                onShare = { _, _ -> }
             )
         }
     }
