@@ -4,6 +4,8 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import fr.quinquenaire.projet12joiefull.domain.model.CatalogItems
 import fr.quinquenaire.projet12joiefull.presentation.theme.JoiefullTheme
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
+import androidx.compose.runtime.rememberCoroutineScope
 import org.junit.Rule
 import org.junit.Test
 
@@ -30,15 +32,20 @@ class CatalogItemsAppTest {
                 userComment = null
             )
         )
-        val uiState = UiState(
-            catalogItemsByCategory = sampleItems.groupBy { it.category }
+        val catalogUiState = CatalogUiState(
+            categories = sampleItems.groupBy { it.category }
+                .map { (name, items) -> CategorySection(name, items) }
         )
 
         // WHEN: On affiche l'application
         composeTestRule.setContent {
             JoiefullTheme {
+                val navigator = rememberListDetailPaneScaffoldNavigator<Long>()
+                val scope = rememberCoroutineScope()
                 CatalogItemsAppContent(
-                    uiState = uiState,
+                    catalogUiState = catalogUiState,
+                    navigator = navigator,
+                    scope = scope,
                     onToggleFavorite = {},
                     onUpdateRating = { _, _ -> },
                     onCommentItem = { _, _ -> }
@@ -67,14 +74,18 @@ class CatalogItemsAppTest {
             userRating = null,
             userComment = null
         )
-        val uiState = UiState(
-            catalogItemsByCategory = mapOf("Hauts" to listOf(item))
+        val catalogUiState = CatalogUiState(
+            categories = listOf(CategorySection("Hauts", listOf(item)))
         )
 
         composeTestRule.setContent {
             JoiefullTheme {
+                val navigator = rememberListDetailPaneScaffoldNavigator<Long>()
+                val scope = rememberCoroutineScope()
                 CatalogItemsAppContent(
-                    uiState = uiState,
+                    catalogUiState = catalogUiState,
+                    navigator = navigator,
+                    scope = scope,
                     onToggleFavorite = {},
                     onUpdateRating = { _, _ -> },
                     onCommentItem = { _, _ -> }
