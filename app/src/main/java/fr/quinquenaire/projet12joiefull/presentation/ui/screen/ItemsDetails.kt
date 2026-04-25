@@ -40,8 +40,14 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -55,7 +61,10 @@ import fr.quinquenaire.projet12joiefull.presentation.ui.components.NameAndRate
 import fr.quinquenaire.projet12joiefull.presentation.ui.components.PriceTag
 import fr.quinquenaire.projet12joiefull.presentation.ui.components.RatingTag
 
-
+/**
+ * Detailed view of a catalog item.
+ * Displays large image, description, rating system, and comments section.
+ */
 @Composable
 fun ItemsDetails(
     item: CatalogItems,
@@ -69,14 +78,27 @@ fun ItemsDetails(
     val scrollState = rememberScrollState()
     val focusRequester = remember { FocusRequester() }
 
+    // Accessibility strings
+    val favoriteActionLabel = if (item.isFavorite) {
+        stringResource(R.string.remove_from_favorites)
+    } else {
+        stringResource(R.string.add_to_favorites)
+    }
+    val shareActionLabel = stringResource(R.string.share)
+
+    // Requests focus on the header section when the screen is first displayed
+    LaunchedEffect(item.id) {
+        scrollState.scrollTo(0)
+        focusRequester.requestFocus()
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
             .padding(8.dp)
-            .focusRequester(focusRequester)
-            .focusable()
     ) {
+        // --- 1. Top Section (Image and Actions) ---
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -88,10 +110,24 @@ fun ItemsDetails(
                     .data(item.imageUrl)
                     .crossfade(true)
                     .build(),
-                contentDescription = item.description,
+                contentDescription = "${item.name}. ${item.description}.",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics {
+                        customActions = listOf(
+                            CustomAccessibilityAction(shareActionLabel) {
+                                onShare(item.name, item.price)
+                                true
+                            },
+                            CustomAccessibilityAction(favoriteActionLabel) {
+                                onToggleFavorite(item.id)
+                                true
+                            }
+                        )
+                    }
             )
+            
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -99,7 +135,7 @@ fun ItemsDetails(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Surface(
-                    color = Color.White.copy(alpha = 0.3f),
+                    color = Color.White.copy(alpha = 1f),
                     shape = CircleShape,
                     modifier = Modifier.size(40.dp)
                 ) {
@@ -110,10 +146,13 @@ fun ItemsDetails(
                         )
                     }
                 }
+                
                 Surface(
-                    color = Color.White.copy(alpha = 0.3f),
+                    color = Color.White.copy(alpha = 1f),
                     shape = CircleShape,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clearAndSetSemantics { }
                 ) {
                     IconButton(onClick = { onShare(item.name, item.price) }) {
                         Icon(
@@ -132,11 +171,19 @@ fun ItemsDetails(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(8.dp)
+                    .clearAndSetSemantics { }
             )
         }
 
+        // --- 2. Information Block (Name, Rate, Price) ---
         Column(
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .focusRequester(focusRequester)
+                .focusable()
+                .semantics(mergeDescendants = true) { 
+                    heading() 
+                }
         ) {
             NameAndRate(name = item.name, userRating = item.userRating)
 
@@ -146,17 +193,22 @@ fun ItemsDetails(
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
+
+        // --- 3. Product Description ---
         Text(
             text = item.description,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .clearAndSetSemantics { }
         )
-//zone notation
+
+        // --- 4. Rating Section ---
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 24.dp)
         ) {
             Surface(
                 modifier = Modifier
@@ -173,13 +225,15 @@ fun ItemsDetails(
             Spacer(modifier = Modifier.width(12.dp))
 
             RatingTag(
+                modifier = Modifier.semantics { traversalIndex = 6f },
                 currentRating = item.userRating ?: 0f,
                 onRatingChanged = { rating ->
                     onRate(rating)
                 }
             )
-
         }
+
+        // --- 5. Comment Section ---
         var commentText by remember(item.id) {
             mutableStateOf(item.userComment ?: "")
         }
@@ -192,16 +246,18 @@ fun ItemsDetails(
             label = { Text(stringResource(R.string.comment_label)) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp),
+                .padding(top = 16.dp)
+                .semantics { traversalIndex = 7f },
             shape = MaterialTheme.shapes.medium,
             maxLines = 3
         )
 
-        // Save if comment
         Button(
             onClick = { onCommentItem(commentText) },
-            modifier = Modifier.padding(top = 8.dp),
-
+            modifier = Modifier
+                .semantics { traversalIndex = 8f }
+                .padding(top = 12.dp, bottom = 24.dp)
+                .fillMaxWidth(),
             enabled = commentText.isNotBlank() && commentText != (item.userComment ?: "")
         ) {
             Text(stringResource(R.string.send))
@@ -227,35 +283,6 @@ private fun ItemsDetailsPreview() {
                     isFavorite = false,
                     userRating = 4.5f,
                     userComment = "Très confortable !"
-                ),
-                onToggleFavorite = {},
-                onBack = {},
-                onRate = { _ -> },
-                onCommentItem = { _ -> },
-                onShare = { _, _ -> }
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ItemsDetailsFavoritePreview() {
-    JoiefullTheme {
-        Surface {
-            ItemsDetails(
-                item = CatalogItems(
-                    id = 2,
-                    name = "Robe de soirée",
-                    imageUrl = "https://example.com/dress.jpg",
-                    description = "Une robe de soirée rouge éclatante",
-                    category = "Vêtements",
-                    likes = 120,
-                    price = 85.0,
-                    originalPrice = 100.0,
-                    isFavorite = true,
-                    userRating = 4.2f,
-                    userComment = "Très belle robe, je recommande !"
                 ),
                 onToggleFavorite = {},
                 onBack = {},

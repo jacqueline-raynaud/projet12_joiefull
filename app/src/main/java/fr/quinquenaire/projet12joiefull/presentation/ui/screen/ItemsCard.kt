@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -28,12 +28,9 @@ import fr.quinquenaire.projet12joiefull.presentation.ui.components.NameAndRate
 import fr.quinquenaire.projet12joiefull.presentation.ui.components.PriceTag
 
 /**
- * card for horizontal list of items
- * Stateless : recieve catalogItems, 2 click with callbacks,
- * State in parent (CatalogItemsApp)
- *
+ * Card component for the horizontal list of items.
+ * Stateless: receives catalog items and handle clicks via callbacks.
  */
-
 @Composable
 fun ItemsCard(
     item: CatalogItems,
@@ -44,9 +41,9 @@ fun ItemsCard(
 ) {
     Card(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.semantics(mergeDescendants = true) { },
         border = if (isSelected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null,
-        elevation = CardDefaults.elevatedCardElevation(2.dp) // a verifier elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.elevatedCardElevation(2.dp)
     ) {
         Box(
             modifier = Modifier
@@ -59,7 +56,7 @@ fun ItemsCard(
                     .data(item.imageUrl)
                     .crossfade(true)
                     .build(),
-                contentDescription = item.description,
+                contentDescription = item.name, // Nom de l'article plus pertinent que la description longue ici
                 contentScale = ContentScale.Crop
             )
 
@@ -74,7 +71,6 @@ fun ItemsCard(
             )
         }
 
-
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
@@ -88,7 +84,6 @@ fun ItemsCard(
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

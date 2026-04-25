@@ -20,6 +20,10 @@ import fr.quinquenaire.projet12joiefull.domain.model.CatalogItems
 import fr.quinquenaire.projet12joiefull.presentation.theme.JoiefullTheme
 import fr.quinquenaire.projet12joiefull.presentation.ui.CategorySection
 
+/**
+ * List component displaying items grouped by categories.
+ * Uses a LazyColumn for categories and LazyRow for items within each category.
+ */
 @Composable
 fun ItemsList(
     modifier: Modifier = Modifier,

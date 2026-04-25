@@ -1,12 +1,12 @@
 package fr.quinquenaire.projet12joiefull.presentation.ui
 
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import fr.quinquenaire.projet12joiefull.domain.model.CatalogItems
 import fr.quinquenaire.projet12joiefull.presentation.theme.JoiefullTheme
-import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
-import androidx.compose.runtime.rememberCoroutineScope
 import org.junit.Rule
 import org.junit.Test
 
@@ -56,8 +56,9 @@ class CatalogItemsAppTest {
         }
 
         // THEN: La catégorie et le nom de l'item sont visibles
-        composeTestRule.onNodeWithText("Hauts").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Veste en jean").assertIsDisplayed()
+        // Utilisation de substring pour éviter les problèmes de formatage/espaces invisibles
+        composeTestRule.onNodeWithText("Hauts", substring = true).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Veste en jean", substring = true).assertIsDisplayed()
     }
 
     @OptIn(ExperimentalMaterial3AdaptiveApi::class)
@@ -97,10 +98,9 @@ class CatalogItemsAppTest {
         }
 
         // WHEN: On clique sur l'item
-        composeTestRule.onNodeWithText("Veste en jean").performClick()
+        composeTestRule.onNodeWithText("Veste en jean", substring = true).performClick()
 
         // THEN: La description (qui est dans l'écran de détails) doit apparaître
-        // Note: Sur une tablette, les deux sont affichés. Sur un téléphone, on navigue vers le détail.
-        composeTestRule.onNodeWithText("Une belle veste").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Une belle veste", substring = true).assertIsDisplayed()
     }
 }

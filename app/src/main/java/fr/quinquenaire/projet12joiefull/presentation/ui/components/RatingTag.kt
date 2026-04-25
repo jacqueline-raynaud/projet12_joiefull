@@ -1,6 +1,5 @@
 package fr.quinquenaire.projet12joiefull.presentation.ui.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
@@ -10,7 +9,15 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import fr.quinquenaire.projet12joiefull.R
 
+/**
+ * Interactive rating component using stars.
+ * Provides accessibility support by describing the rating action.
+ */
 @Composable
 fun RatingTag(
     currentRating: Float,
@@ -19,8 +26,12 @@ fun RatingTag(
     maxRating: Int = 5
 ) {
     Column(modifier = modifier) {
-        // avatar and rating
-        Row(modifier = modifier) {
+        Row(
+            modifier = Modifier.semantics(mergeDescendants = true) {
+                // Provides a global description for the rating group
+                contentDescription = "noter ${currentRating.toInt()} étoiles sur $maxRating"
+            }
+        ) {
             for (i in 1..maxRating) {
                 val isSelected = i <= currentRating
                 IconButton(
@@ -30,7 +41,7 @@ fun RatingTag(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Star,
-                        contentDescription = "Étoile $i",
+                        contentDescription = stringResource(R.string.rating_description, i, maxRating),
                         tint = if (isSelected) Color(0xFFFFC107) else Color.Gray
                     )
                 }
