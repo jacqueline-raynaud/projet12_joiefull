@@ -6,6 +6,13 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data Access Object (DAO) for the "catalog" table.
+ *
+ * This interface defines the database operations for [CatalogItemsEntity], including
+ * methods for retrieving items, tracking favorites, and managing user-generated
+ * content such as ratings and comments.
+ */
 @Dao
 interface CatalogItemsDao {
 

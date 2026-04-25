@@ -10,6 +10,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+/**
+ * Implementation of the [CatalogItemsRepository] interface.
+ *
+ * This class acts as the single source of truth for catalog data, coordinating between the
+ * local database ([CatalogItemsDao]) and the remote data source ([CatalogItemsApiService]).
+ * It handles data mapping between data layer entities and domain layer models.
+ *
+ * @property catalogItemsDao The Data Access Object for local database operations.
+ * @property catalogItemsApiService The API service for fetching data from the remote server.
+ */
 class RepositoryImpl @Inject constructor(
     private val catalogItemsDao: CatalogItemsDao,
     private val catalogItemsApiService: CatalogItemsApiService

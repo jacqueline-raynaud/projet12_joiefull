@@ -12,6 +12,12 @@ import fr.quinquenaire.projet12joiefull.data.local.AppDatabase
 import javax.inject.Singleton
 
 
+/**
+ * Dagger Hilt module responsible for providing database-related dependencies.
+ *
+ * This module manages the creation and injection of the [AppDatabase] instance
+ * and its associated Data Access Objects (DAOs) across the application.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {

@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Room Entity - local storage in SQLite.
+ * Represents a catalog item in the local Room database.
  * Contains API fields + local user fields
  * (isFavorite, userRating) that do not exist in the JSON.
  */
@@ -20,6 +20,7 @@ data class CatalogItemsEntity(
     @ColumnInfo(name = "likes") val likes: Int,
     @ColumnInfo(name = "price") val price: Double,
     @ColumnInfo(name = "originalPrice") val originalPrice: Double,
+    // local user fields not exist in the Json API
     @ColumnInfo(name = "isFavorite") val isFavorite: Boolean = false,
     @ColumnInfo(name = "userRating") val userRating: Float? = null,
     @ColumnInfo(name = "userComment") val userComment: String? = null

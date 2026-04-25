@@ -4,7 +4,7 @@ import retrofit2.http.GET
 
 /**
  * Interface Retrofit for the catalog items API.
- * The base URL is configured in the Hilt module (NetworkModule)..
+ * The base URL is configured in the Hilt module (NetworkModule)
  */
 interface CatalogItemsApiService {
 

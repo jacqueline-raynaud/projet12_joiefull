@@ -12,6 +12,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Singleton
 
+/**
+ * Dagger Hilt module responsible for providing network-related dependencies.
+ *
+ * This module configures and provides instances of [Json], [OkHttpClient], [Retrofit],
+ * and the [CatalogItemsApiService] for the application. All dependencies are provided
+ * as singletons and are available throughout the application's lifecycle.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -44,7 +51,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideClothingApiService(retrofit: Retrofit): CatalogItemsApiService {
+    fun provideCatalogItemsApiService(retrofit: Retrofit): CatalogItemsApiService {
         return retrofit.create(CatalogItemsApiService::class.java)
     }
 }
