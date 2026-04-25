@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.compose.adaptive.navigation)
+    implementation(libs.androidx.core.splashscreen)
 
 // ── Tests ──
     testImplementation(libs.junit)
