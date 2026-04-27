@@ -76,7 +76,7 @@ fun ItemsList(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, fontScale = 1f)
 @Composable
 private fun ItemsListPreview() {
     val sampleItems = listOf(

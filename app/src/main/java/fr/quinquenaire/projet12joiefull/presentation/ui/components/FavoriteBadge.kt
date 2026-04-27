@@ -26,6 +26,7 @@ import fr.quinquenaire.projet12joiefull.presentation.theme.JoiefullTheme
 /**
  * A badge displaying the number of likes and a toggle button for favorites.
  * Used on item cards and detail screens.
+ * Accessibility: IconButton respects the 48dp touch target rule.
  */
 @Composable
 fun FavoriteBadge(
@@ -47,7 +48,8 @@ fun FavoriteBadge(
             modifier = Modifier.padding(horizontal = 4.dp)
         ) {
             IconButton(
-                onClick = { onToggleFavorite(itemId) }
+                onClick = { onToggleFavorite(itemId) },
+                modifier = Modifier.size(48.dp) // Standard touch target size
             ) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
@@ -64,15 +66,17 @@ fun FavoriteBadge(
             Text(
                 text = "$likes",
                 style = MaterialTheme.typography.labelSmall,
-                modifier = Modifier.semantics {
-                    contentDescription = "nombre de likes : $likes"
-                }
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .semantics {
+                        contentDescription = "nombre de likes : $likes"
+                    }
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, fontScale = 1f)
 @Composable
 private fun FavoriteBadgePreview() {
     JoiefullTheme {
@@ -85,7 +89,7 @@ private fun FavoriteBadgePreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, fontScale = 1f)
 @Composable
 private fun FavoriteBadgeFavoritePreview() {
     JoiefullTheme {

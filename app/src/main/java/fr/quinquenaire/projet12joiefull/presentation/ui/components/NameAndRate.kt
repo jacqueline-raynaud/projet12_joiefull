@@ -55,7 +55,7 @@ fun NameAndRate (
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, fontScale = 1f)
 @Composable
 fun NameAndRatePreview() {
     JoiefullTheme {

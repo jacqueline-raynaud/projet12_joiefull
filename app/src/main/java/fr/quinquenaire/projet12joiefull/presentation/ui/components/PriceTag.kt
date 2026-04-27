@@ -54,7 +54,7 @@ fun PriceTag(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, fontScale = 1f)
 @Composable
 fun PriceTagPreview() {
     JoiefullTheme {
@@ -65,7 +65,7 @@ fun PriceTagPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, fontScale = 1f)
 @Composable
 fun PriceTagNoDiscountPreview() {
     JoiefullTheme {

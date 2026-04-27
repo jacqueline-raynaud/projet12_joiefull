@@ -62,7 +62,7 @@ import fr.quinquenaire.projet12joiefull.presentation.ui.components.RatingTag
 
 /**
  * Detailed view of a catalog item.
- * Scroll is removed and image fits without cropping.
+ * Accessibility: Updated buttons and interactive elements to respect the 48dp touch target rule.
  */
 @Composable
 fun ItemsDetails(
@@ -134,7 +134,7 @@ fun ItemsDetails(
                 Surface(
                     color = Color.White.copy(alpha = 1f),
                     shape = CircleShape,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(48.dp)
                 ) {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -148,7 +148,7 @@ fun ItemsDetails(
                     color = Color.White.copy(alpha = 1f),
                     shape = CircleShape,
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(48.dp)
                         .clearAndSetSemantics { }
                 ) {
                     IconButton(onClick = { onShare(item.name, item.price) }) {
@@ -241,6 +241,7 @@ fun ItemsDetails(
             label = { Text(stringResource(R.string.comment_label)) },
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 16.dp)
                 .semantics { traversalIndex = 7f },
             shape = MaterialTheme.shapes.medium,
             maxLines = 3
@@ -251,7 +252,8 @@ fun ItemsDetails(
             modifier = Modifier
                 .semantics { traversalIndex = 8f }
                 .padding(top = 12.dp, bottom = 24.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .heightIn(min = 48.dp), // Accessibility: Ensure minimum touch target height
             enabled = commentText.isNotBlank() && commentText != (item.userComment ?: "")
         ) {
             Text(stringResource(R.string.send))
@@ -259,7 +261,7 @@ fun ItemsDetails(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true,fontScale = 1f)
 @Composable
 private fun ItemsDetailsPreview() {
     JoiefullTheme {
