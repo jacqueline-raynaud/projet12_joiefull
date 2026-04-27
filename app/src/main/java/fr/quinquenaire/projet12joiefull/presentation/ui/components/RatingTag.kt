@@ -2,6 +2,7 @@ package fr.quinquenaire.projet12joiefull.presentation.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
@@ -13,12 +14,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import fr.quinquenaire.projet12joiefull.R
 import fr.quinquenaire.projet12joiefull.presentation.theme.JoiefullTheme
 
 /**
  * Interactive rating component using stars.
  * Provides accessibility support by describing the rating action.
+ * Accessibility: IconButton respects the 48dp touch target rule.
  */
 @Composable
 fun RatingTag(
@@ -39,7 +42,8 @@ fun RatingTag(
                 IconButton(
                     onClick = {
                         onRatingChanged(i.toFloat())
-                    }
+                    },
+                    modifier = Modifier.size(48.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Star,

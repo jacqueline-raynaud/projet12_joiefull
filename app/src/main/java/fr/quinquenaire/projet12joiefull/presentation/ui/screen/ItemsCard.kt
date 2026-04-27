@@ -56,7 +56,7 @@ fun ItemsCard(
                     .data(item.imageUrl)
                     .crossfade(true)
                     .build(),
-                contentDescription = item.name, // Nom de l'article plus pertinent que la description longue ici
+                contentDescription = null,
                 contentScale = ContentScale.Crop
             )
 
@@ -85,7 +85,7 @@ fun ItemsCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, fontScale = 1f)
 @Composable
 private fun ItemsCardPreview() {
     JoiefullTheme {
@@ -111,7 +111,7 @@ private fun ItemsCardPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true,fontScale = 1f)
 @Composable
 private fun ItemsCardFavoriteSelectedPreview() {
     JoiefullTheme {
