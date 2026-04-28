@@ -49,7 +49,10 @@ fun CatalogItemsApp(
         scope = scope,
         onToggleFavorite = { viewModel.onToggleFavorite(it) },
         onUpdateRating = { id, rating -> viewModel.onUpdateRating(id, rating) },
-        onCommentItem = { id, comment -> viewModel.onCommentItem(id, comment) }
+        onCommentItem = { id, comment -> viewModel.onCommentItem(id, comment) },
+        commentDraft = catalogUiState.commentDraft,
+        onCommentChanged = viewModel::onCommentChanged,
+        onSelectItemComment = viewModel::onSelectItemComment
     )
 }
 
@@ -65,7 +68,10 @@ fun CatalogItemsAppContent(
     scope: CoroutineScope,
     onToggleFavorite: (Long) -> Unit,
     onUpdateRating: (Long, Float) -> Unit,
-    onCommentItem: (Long, String) -> Unit
+    onCommentItem: (Long, String) -> Unit,
+    commentDraft: String,
+    onCommentChanged: (String) -> Unit,
+    onSelectItemComment : (String?) -> Unit
 ) {
     val context = LocalContext.current
     val isMultiPane = navigator.scaffoldValue[ListDetailPaneScaffoldRole.List] == PaneAdaptedValue.Expanded &&
@@ -79,6 +85,10 @@ fun CatalogItemsAppContent(
                     categories = catalogUiState.categories,
                     onItemClick = { itemId ->
                         scope.launch {
+                            val item = catalogUiState.categories
+                                .flatMap { it.items }
+                                .find { it.id == itemId }
+                            onSelectItemComment(item?.userComment)
                             navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, itemId)
                         }
                     },
@@ -99,7 +109,9 @@ fun CatalogItemsAppContent(
                         onShare = { name, price -> shareItem(context, name, price) },
                         onRate = { rating -> onUpdateRating(selectedItem.id, rating) },
                         onToggleFavorite = { onToggleFavorite(selectedItem.id) },
-                        onCommentItem = { comment -> onCommentItem(selectedItem.id, comment) }
+                        onCommentItem = { comment -> onCommentItem(selectedItem.id, comment) },
+                        commentDraft = commentDraft,
+                        onCommentChanged = onCommentChanged
                     )
                 } else {
                     EmptyDetailPlaceholder()
@@ -118,6 +130,10 @@ fun CatalogItemsAppContent(
                         categories = catalogUiState.categories,
                         onItemClick = { itemId ->
                             scope.launch {
+                                val item = catalogUiState.categories
+                                    .flatMap { it.items }
+                                    .find { it.id == itemId }
+                                onSelectItemComment(item?.userComment)
                                 navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, itemId)
                             }
                         },
@@ -140,7 +156,9 @@ fun CatalogItemsAppContent(
                             onShare = { name, price -> shareItem(context, name, price) },
                             onRate = { rating -> onUpdateRating(selectedItem.id, rating) },
                             onToggleFavorite = { onToggleFavorite(selectedItem.id) },
-                            onCommentItem = { comment -> onCommentItem(selectedItem.id, comment) }
+                            onCommentItem = { comment -> onCommentItem(selectedItem.id, comment) },
+                            commentDraft = commentDraft,
+                            onCommentChanged = onCommentChanged
                         )
                     } else {
                         EmptyDetailPlaceholder()
@@ -201,7 +219,10 @@ private fun CatalogItemsAppPreview() {
             scope = scope,
             onToggleFavorite = {},
             onUpdateRating = { _, _ -> },
-            onCommentItem = { _, _ -> }
+            onCommentItem = { _, _ -> },
+            commentDraft = "",
+            onCommentChanged = {},
+            onSelectItemComment = {}
         )
     }
 }

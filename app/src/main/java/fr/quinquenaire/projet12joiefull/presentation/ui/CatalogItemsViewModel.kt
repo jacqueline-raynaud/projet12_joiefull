@@ -105,4 +105,12 @@ class CatalogItemsViewModel @Inject constructor(
             }
         }
     }
+
+    fun onCommentChanged(newText: String) {
+        _localState.update { it.copy(commentDraft = newText) }
+    }
+
+    fun onSelectItemComment(comment: String?) {
+        _localState.update { it.copy(commentDraft = comment ?: "") }
+    }
 }

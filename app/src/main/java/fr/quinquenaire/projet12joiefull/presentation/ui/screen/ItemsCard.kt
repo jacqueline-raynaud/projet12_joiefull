@@ -21,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.placeholder
+import fr.quinquenaire.projet12joiefull.R
 import fr.quinquenaire.projet12joiefull.domain.model.CatalogItems
 import fr.quinquenaire.projet12joiefull.presentation.theme.JoiefullTheme
 import fr.quinquenaire.projet12joiefull.presentation.ui.components.FavoriteBadge
@@ -55,6 +58,8 @@ fun ItemsCard(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(item.imageUrl)
                     .crossfade(true)
+                    .placeholder(R.drawable.test_image)
+                    .error(R.drawable.test_image)
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop

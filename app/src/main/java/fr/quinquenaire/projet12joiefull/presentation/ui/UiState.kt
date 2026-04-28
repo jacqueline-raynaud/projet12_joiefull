@@ -24,6 +24,7 @@ data class CategorySection(
 data class CatalogUiState (
     val categories: List<CategorySection> = emptyList(),
     val selectedItem: CatalogItems? = null,
+    val commentDraft: String = "",
     val isLoading: Boolean = false,
     val error: String? = null
 )

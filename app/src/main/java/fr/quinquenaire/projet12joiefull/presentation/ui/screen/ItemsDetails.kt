@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
@@ -52,6 +54,8 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.placeholder
 import fr.quinquenaire.projet12joiefull.R
 import fr.quinquenaire.projet12joiefull.domain.model.CatalogItems
 import fr.quinquenaire.projet12joiefull.presentation.theme.JoiefullTheme
@@ -72,12 +76,21 @@ fun ItemsDetails(
     modifier: Modifier = Modifier,
     onRate: (Float) -> Unit,
     onCommentItem: (String) -> Unit,
-    onShare: (String, Double) -> Unit
+    onShare: (String, Double) -> Unit,
+    commentDraft: String,
+    onCommentChanged: (String) -> Unit
 ) {
+    /*
+     *focusrequester prevents the text field from activating upon opening.
+     *screenHeight determines the screen size for the image.
+     *scrollState enables scrolling.
+     */
     val focusRequester = remember { FocusRequester() }
-    
+
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
+
+    val scrollState = rememberScrollState()
 
     // Accessibility strings
     val favoriteActionLabel = if (item.isFavorite) {
@@ -89,12 +102,14 @@ fun ItemsDetails(
 
     LaunchedEffect(item.id) {
         focusRequester.requestFocus()
+        scrollState.scrollTo(0)
     }
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(8.dp)
+            .verticalScroll(scrollState)
     ) {
         // --- 1. Top Section (Image and Actions) ---
         Box(
@@ -106,11 +121,14 @@ fun ItemsDetails(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(item.imageUrl)
                     .crossfade(true)
+                    .placeholder(R.drawable.test_image)
+                    .error(R.drawable.test_image)
                     .build(),
                 contentDescription = item.name,
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .heightIn(max = screenHeight * 0.50f)
+                    .fillMaxWidth()
                     .semantics {
                         customActions = listOf(
                             CustomAccessibilityAction(shareActionLabel) {
@@ -124,7 +142,7 @@ fun ItemsDetails(
                         )
                     }
             )
-            
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -143,7 +161,7 @@ fun ItemsDetails(
                         )
                     }
                 }
-                
+
                 Surface(
                     color = Color.White.copy(alpha = 1f),
                     shape = CircleShape,
@@ -178,7 +196,7 @@ fun ItemsDetails(
                 .padding(top = 16.dp)
                 .focusRequester(focusRequester)
                 .focusable()
-                .semantics(mergeDescendants = true) { 
+                .semantics(mergeDescendants = true) {
                     heading()
                 }
         ) {
@@ -229,15 +247,10 @@ fun ItemsDetails(
         }
 
         // --- 5. Comment Section ---
-        var commentText by remember(item.id) {
-            mutableStateOf(item.userComment ?: "")
-        }
 
         OutlinedTextField(
-            value = commentText,
-            onValueChange = { newText ->
-                commentText = newText
-            },
+            value = commentDraft,
+            onValueChange = onCommentChanged,
             label = { Text(stringResource(R.string.comment_label)) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -248,20 +261,22 @@ fun ItemsDetails(
         )
 
         Button(
-            onClick = { onCommentItem(commentText) },
+            onClick = { onCommentItem(commentDraft) },
             modifier = Modifier
                 .semantics { traversalIndex = 8f }
                 .padding(top = 12.dp, bottom = 24.dp)
                 .fillMaxWidth()
                 .heightIn(min = 48.dp), // Accessibility: Ensure minimum touch target height
-            enabled = commentText.isNotBlank() && commentText != (item.userComment ?: "")
+            enabled = commentDraft.isNotBlank() && commentDraft != (item.userComment ?: "")
         ) {
             Text(stringResource(R.string.send))
         }
     }
 }
-
-@Preview(showBackground = true,fontScale = 1f)
+@Preview(showBackground = true, name = "Petit écran", device = "spec:width=320dp,height=480dp,dpi=320")
+@Preview(showBackground = true, name = "Standard", device = "spec:width=411dp,height=891dp,dpi=420")
+@Preview(showBackground = true, name = "Tablette", device = "spec:width=1280dp,height=800dp,dpi=240")
+@Preview(showBackground = true, fontScale = 1f)
 @Composable
 private fun ItemsDetailsPreview() {
     JoiefullTheme {
@@ -284,7 +299,9 @@ private fun ItemsDetailsPreview() {
                 onBack = {},
                 onRate = { _ -> },
                 onCommentItem = { _ -> },
-                onShare = { _, _ -> }
+                onShare = { _, _ -> },
+                commentDraft = "",
+                onCommentChanged = {}
             )
         }
     }
